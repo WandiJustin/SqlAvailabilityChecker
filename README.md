@@ -1,20 +1,17 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+Wichtig für das Skript ist dass pyodbc installiert ist.
+Dies geht mit folgendem Command:
+pip install pyodbc
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+Auch soll das Skript über PowerShell mit dem Administrator gestartet werden. 
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
-
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
-
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+#Aufgabestellung
+Es soll eine Eingabe des Datenbankservers/Instanz erfolgen können, wo anschliessend eine Test-Datenbank mit mehreren Test-Tabellen (inkl. Random-Inhalt) erstellt wird.
+Jede zweite Sekunde soll ein Verbindungsaufbau stattfinden und ein Datensatz in einer Tabelle geschrieben werden. (Verbindungsaufbau – Schreiben - Verbindungsabbau)
+Jede zweite Sekunde soll ein Verbindungsaufbau stattfinden und ein Datensatz in einer Tabelle gelöscht werden. (Verbindungsaufbau – Löschen - Verbindungsabbau)
+Sekunde 1: Verbindungsaufbau – Schreiben – Verbindungsabbau
+Sekunde 2: Verbindungsaufbau – Löschen – Verbindungsabbau
+Sekunde 3 Verbindungsaufbau – Schreiben – Verbindungsabbau
+Sekunde 4 Verbindungsaufbau – Löschen – Verbindungsabbau
+Sekunde 5 …
+In einer Ausgabe soll immer gezeigt werden, ob der Verbindungsaufbau, Schreiben/Löschen, Verbindungsabbau erfolgreich durchgeführt werden konnte.
+Sollte der Verbindungsaufbau fehlschlagen, soll er jede Sekunde wiederholt werden, bis es wieder funktioniert.
