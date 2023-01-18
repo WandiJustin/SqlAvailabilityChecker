@@ -1,18 +1,16 @@
 import pyodbc
 import random
 
-# #Ask for user input
+#Ask for user input
 print("Welcome to the SQL Availability Checker.")
 server_name = input('Please insert the name of the Database Server\n')
 db_name = input('Please insert the name of the Database\n')
-username = input('Please insert the name of the Username to conntect to ' + db_name + "\n")
-password = input('Please insert the password for the Username' + username + 'to conntect to ' + db_name + "\n")
+Username = input('Please insert the name of the Username to conntect to ' + db_name + "\n")
+password = input('Please insert the password for the Username' + Username + 'to conntect to ' + db_name + "\n")
 
 # Connect to the database
-# While or for loop - what's required? With while, x in the first print won't work. 
-for x in range(5):
-#while True:
-    print("This is try " + x)
+for x in range(10):
+    print("This is try " + str(x + 1))
     print("connection establishment")
 
     conn = pyodbc.connect(
@@ -22,6 +20,14 @@ for x in range(5):
         'UID=username;'
         'PWD=password'
     )
+
+    # conn = pyodbc.connect(
+    #     'DRIVER={ODBC Driver 17 for SQL Server};'
+    #     'SERVER=localhost;'
+    #     'DATABASE=db_test;'
+    #     'UID=SA;'
+    #     'PWD=yourStrong(!)Password'
+    # )
 
     if conn:
         print("The connection was established sucessfully.")
@@ -35,13 +41,14 @@ for x in range(5):
                         name VARCHAR(255) NOT NULL,
                         age INT NOT NULL);''')
             print("Table test_users created successfully")
+
+                    # Add some random content to the test_users table
+            for i in range(5):
+                cursor.execute("INSERT INTO test_users (id, name, age) \
+                            VALUES (" + str(i) + ", 'user" + str(i) + "', " + str(10 + i) + ")")
+
         except:
             print("Table test_users already exists.")
-
-        # Add some random content to the test_users table
-        for i in range(5):
-            cursor.execute("INSERT INTO test_users (id, name, age) \
-                        VALUES (" + str(i) + ", 'user" + str(i) + "', " + str(10 + i) + ")")
 
         # Create another example table
         try:
@@ -50,13 +57,13 @@ for x in range(5):
                         name VARCHAR(255) NOT NULL,
                         price REAL NOT NULL);''')
             print("Table test_items created successfully")
+                    # Add some random content to the test_items table
+            for i in range(5):
+               cursor.execute("INSERT INTO test_items (id, name, price) \
+                            VALUES (" + str(i) + ", 'item" + str(i) + "', " + str(100 + i) + ")")
+
         except:
             print("Table test_items already exists.")
-
-        # Add some random content to the test_items table
-        for i in range(5):
-            cursor.execute("INSERT INTO test_items (id, name, price) \
-                        VALUES (" + str(i) + ", 'item" + str(i) + "', " + str(100 + i) + ")")
 
         # Save and close the connection to the database
         conn.commit()
@@ -64,6 +71,14 @@ for x in range(5):
         print("connection closed sucessfully")
 
     print("connection establishment")
+
+    # conn = pyodbc.connect(
+    #     'DRIVER={ODBC Driver 17 for SQL Server};'
+    #     'SERVER=localhost;'
+    #     'DATABASE=db_test;'
+    #     'UID=SA;'
+    #     'PWD=yourStrong(!)Password'
+    # )
 
     conn = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
