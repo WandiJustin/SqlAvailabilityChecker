@@ -7,9 +7,11 @@ server_name = input('Please insert the name of the Database Server\n')
 db_name = input('Please insert the name of the Database\n')
 Username = input('Please insert the name of the Username to conntect to ' + db_name + "\n")
 password = input('Please insert the password for the Username' + Username + 'to conntect to ' + db_name + "\n")
+trys = input('Please insert the amount of trys for this check\n"')
+
 
 # Connect to the database
-for x in range(10):
+for x in range(int(trys)):
     print("This is try " + str(x + 1) + '!')
     print("Connection establishment is starting...")
 
@@ -60,6 +62,7 @@ for x in range(10):
         # Save and close the connection to the database
         conn.commit()
         conn.close()
+
         print("Connection was closed sucessfully!")
 
     print("Connection establishment is starting...")
@@ -93,6 +96,7 @@ for x in range(10):
         # Save and close the connection to the database
         conn.commit()
         conn.close()
+        
         print("The connection was closed sucessfully!")
     else:
         print("The connection attempt wasn't sucessful. The MSSQL server is either not running or does not exist.")
