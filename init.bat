@@ -1,1 +1,1 @@
-pip install -r requirements.txt
+pip install -r requirements.txt --proxy http://164.14.248.85:9099

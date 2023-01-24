@@ -1,102 +1,138 @@
+import PySimpleGUI as sg
 import pyodbc
-import random
+import time
 
-#Ask for user input
-print("Welcome to the SQL Availability Checker.")
-server_name = input('Please insert the name of the Database Server\n')
-db_name = input('Please insert the name of the Database\n')
-Username = input('Please insert the name of the Username to conntect to ' + db_name + "\n")
-password = input('Please insert the password for the Username' + Username + 'to conntect to ' + db_name + "\n")
-trys = input('Please insert the amount of trys for this check\n"')
+db_name = "Test"
+Username = "Test"
+trys = 0
 
+sg.theme('DarkBlue')   # Add a touch of color
+# All the stuff inside your window.
+layout = [  [sg.Text('Welcome to the SQL Availability Checker.')],
+            [sg.Text('Please insert the name of the Database Server')], 
+            [sg.Input(key='server_name')],
+            [sg.Text('Please insert the name of the Database')], 
+            [sg.Input(key='db_name')],
+            [sg.Text('Please insert the name of the Username to conntect to the database')], 
+            [sg.Input(key='Username')],
+            [sg.Text('Please insert the password for the Username to conntect to the database')], 
+            [sg.Input(key='password')],
+            [sg.Button('Connect'), sg.Button('Quit')] ,
+            [sg.Text("Anything printed will display here!")],
+            [sg.Multiline(size=(60,15), font='Courier 8', expand_x=True, expand_y=True, write_only=True,
+                reroute_stdout=True, reroute_stderr=True, echo_stdout_stderr=True, autoscroll=True, auto_refresh=True)]
+                      # [sg.Output(size=(60,15), font='Courier 8', expand_x=True, expand_y=True)]
+                      ]
+# Create the Window
+window = sg.Window('SQL Availability Checker', layout)
+# Event Loop to process "events" and get the "values" of the inputs
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED or event == 'Quit': # if user closes window or clicks cancel
+        break
 
-# Connect to the database
-for x in range(int(trys)):
-    print("This is try " + str(x + 1) + '!')
-    print("Connection establishment is starting...")
+    server_name = values['server_name']
+    db_name = values['db_name']
+    Username = values['Username']
+    password = values['password']
 
-    conn = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=' + server_name + ';'
-        'DATABASE=' + db_name + ';'
-        'UID=' + Username + ';'
-        'PWD=' + password
-    )
+    if event == 'Connect':
+        while True:
+            trys += 1
+            print("This is try " + str(trys) + '!')
+            print("Connection establishment is starting...")
 
-    if conn:
-        print("The connection was established sucessfully!")
-        cursor = conn.cursor()
-    
-        print("Data write in is starting...")
-        # Create a test database
-        try:
-            cursor.execute('''CREATE TABLE test_users
-                        (id INT PRIMARY KEY NOT NULL, 
-                        name VARCHAR(255) NOT NULL,
-                        age INT NOT NULL);''')
-            print("Table test_users created successfully!")
+            conn = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=' + server_name + ';'
+                'DATABASE=' + db_name + ';'
+                'UID=' + Username + ';'
+                'PWD=' + password
+            )
+            time.sleep(1)
 
-                    # Add some random content to the test_users table
-            for i in range(5):
-                cursor.execute("INSERT INTO test_users (id, name, age) \
-                            VALUES (" + str(i) + ", 'user" + str(i) + "', " + str(10 + i) + ")")
+            if conn:
+                print("The connection was established sucessfully!")
+                cursor = conn.cursor()
+            
+                print("Data write in is starting...")
+                # Create a test database
+                try:
+                    cursor.execute('''CREATE TABLE test_users
+                                (id INT PRIMARY KEY NOT NULL, 
+                                name VARCHAR(255) NOT NULL,
+                                age INT NOT NULL);''')
+                    print("Table test_users created successfully!")
 
-        except:
-            print("Table test_users already exists!")
+                            # Add some random content to the test_users table
+                    for i in range(5):
+                        cursor.execute("INSERT INTO test_users (id, name, age) \
+                                    VALUES (" + str(i) + ", 'user" + str(i) + "', " + str(10 + i) + ")")
+                        time.sleep(1)
+                except:
+                    print("Table test_users already exists!")
 
-        # Create another example table
-        try:
-            cursor.execute('''CREATE TABLE test_items
-                        (id INT PRIMARY KEY NOT NULL,
-                        name VARCHAR(255) NOT NULL,
-                        price REAL NOT NULL);''')
-            print("Table test_items created successfully!")
-                    # Add some random content to the test_items table
-            for i in range(5):
-               cursor.execute("INSERT INTO test_items (id, name, price) \
-                            VALUES (" + str(i) + ", 'item" + str(i) + "', " + str(100 + i) + ")")
+                # Create another example table
+                try:
+                    cursor.execute('''CREATE TABLE test_items
+                                (id INT PRIMARY KEY NOT NULL,
+                                name VARCHAR(255) NOT NULL,
+                                price REAL NOT NULL);''')
+                    print("Table test_items created successfully!")
+                            # Add some random content to the test_items table
+                    for i in range(5):
+                        cursor.execute("INSERT INTO test_items (id, name, price) \
+                                    VALUES (" + str(i) + ", 'item" + str(i) + "', " + str(100 + i) + ")")
+                    time.sleep(1)
 
-        except:
-            print("Table test_items already exists!")
+                except:
+                    print("Table test_items already exists!")
 
-        # Save and close the connection to the database
-        conn.commit()
-        conn.close()
+                # Save and close the connection to the database
+                conn.commit()
+                conn.close()
 
-        print("Connection was closed sucessfully!")
+                print("Connection was closed sucessfully!")
+            
+            time.sleep(1)
+            print("Connection establishment is starting...")
 
-    print("Connection establishment is starting...")
+            conn = pyodbc.connect(
+                'DRIVER={ODBC Driver 17 for SQL Server};'
+                'SERVER=' + server_name + ';'
+                'DATABASE=' + db_name + ';'
+                'UID=' + Username + ';'
+                'PWD=' + password
+            )
+            time.sleep(1)
 
-    conn = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=' + server_name + ';'
-        'DATABASE=' + db_name + ';'
-        'UID=' + Username + ';'
-        'PWD=' + password
-    )
+            if conn:
+                print("The connection was established sucessfully!")
+                cursor = conn.cursor()
+            
+                print("Data dropping is starting...")
+                # Drop both test tables
+                try:
+                    cursor.execute('''DROP TABLE test_users;''')
+                    print("Table test_users dropped successfully!")
+                except:
+                    print("Table test_users doesn't exist!")
+                time.sleep(1)
 
-    if conn:
-        print("The connection was established sucessfully!")
-        cursor = conn.cursor()
-    
-        print("Data dropping is starting...")
-        # Drop both test tables
-        try:
-            cursor.execute('''DROP TABLE test_users;''')
-            print("Table test_users dropped successfully!")
-        except:
-            print("Table test_users doesn't exist!")
+                try:
+                    cursor.execute('''DROP TABLE test_items;''')
+                    print("Table test_users dropped successfully!")
+                except:
+                    print("Table test_items doesn't exist!")
+                time.sleep(1)
 
-        try:
-            cursor.execute('''DROP TABLE test_items;''')
-            print("Table test_users dropped successfully!")
-        except:
-            print("Table test_items doesn't exist!")
-
-        # Save and close the connection to the database
-        conn.commit()
-        conn.close()
-        
-        print("The connection was closed sucessfully!")
-    else:
-        print("The connection attempt wasn't sucessful. The MSSQL server is either not running or does not exist.")
+                # Save and close the connection to the database
+                conn.commit()
+                conn.close()
+                
+                print("The connection was closed sucessfully!")
+                time.sleep(2)
+            else:
+                print("The connection attempt wasn't sucessful. The MSSQL server is either not running or does not exist.")
+                time.sleep(2)
+window.close()
