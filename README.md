@@ -1,6 +1,3 @@
-Wichtig für das Skript ist dass Python 3 installiert ist.
-Danach kann die init.bat ausgeführt werden & das main.py Skript (als Administrator)
+This is a small python based script with a GUI to check if the connection to a SQL Database is stable.
 
-
-25.01.2023
-WandJ0
+It's important that Python 3 is installed and running on your system. After the Python 3 installation you can execute the init.bat and then the main.py as an administirator.
